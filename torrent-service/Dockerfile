@@ -9,4 +9,4 @@ EXPOSE 443
 RUN yarn install --frozen-lockfile
 RUN yarn global add nest
 
-ENTRYPOINT ["yarn"]
+CMD ["yarn", "start"]
