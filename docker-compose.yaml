@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   bot:
-    build: "."
+    build: "./torrent-service/"
     ports:
       - "80:80"
     restart: unless-stopped

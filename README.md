@@ -1,23 +1,60 @@
-# Getting started
+![1337x Logo](https://duckduckgo.com/i/e4d3d1a0.png)
 
-## To install a package
+# Unofficial Discord Bot
 
-```sh
-go get <package>
+![build](https://github.com/brandongallagher1999/1337x-Bot/actions/workflows/ci.yml/badge.svg) ![deployment](https://github.com/brandongallagher1999/1337x-Bot/actions/workflows/azure.yml/badge.svg)
 
-// go get github.com/labstack/echo/v4
+## Description
+
+- Uses a 1337x Microservice (Nest.JS) and Golang to create a Bot that allows users to search for content such as Movies, Games, etc. and returning a relevant
+  list of Torrents with their respective shortened magnet URLs, Names, Seeders and File Sizes.
+
+# Commands
+
+```txt
+// Search for a list of Torrents
+.torrent <query>
+
+// Display all available commands
+.help
+
+// Get the GitHub link to this project
+.github
 ```
 
-## Run the main go file
+# How to run using Docker
 
-```sh
-go run <file.go>
-// go run main.go
+## Pre-Requisites
+
+- Install Docker [**here**](https://docs.docker.com/get-docker/)
+
+## Clone repository
+
+- Clone the project by running:
+
+```txt
+git clone https://github.com/brandongallagher1999/1337x-Bot/
 ```
 
-## Build the file into a binary (run without the compiler, platform dependent either a .exe or something else)
+## Create Configuration File
+
+- Go to root folder and:
 
 ```sh
-go build <file.go>
-//go build main.go
+TOKEN="your bot token goes in this string"
+
+echo { '"token"' : '"'$TOKEN'"' } > config.json
 ```
+
+## Container
+
+- Go into root folder and run
+
+```txt
+docker-compose build
+docker-compose up -d
+```
+
+# Example / Usage
+
+![Image of the Bot Working](/images/example.jpg?raw=true)
