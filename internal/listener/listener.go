@@ -67,15 +67,22 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if string(m.Content[0]) == prefix {
 		splitMessage := strings.Fields(m.Content)
-		if len(splitMessage) > 1 && splitMessage[0] == prefix+"torrent" {
-			queryString := strings.Join(splitMessage[1:], " ")
-			fmt.Println(queryString)
-			/*here we would place the call for the api, once it returns we would pass the response to a shorener function
-			once shortening is done we would return the new message and that would be it.
-			*/
-			_, err := s.ChannelMessageSend(m.ChannelID, "HHHHHHH!")
-			if err != nil {
-				fmt.Println(err)
+		if len(splitMessage) > 1 && splitMessage[0] == prefix+command {
+			if splitMessage[1] == "--help" {
+				_, err := s.ChannelMessageSend(m.ChannelID, "Usage: "+prefix+command+" <query>")
+				if err != nil {
+					fmt.Println(err)
+				}
+			} else {
+				queryString := strings.Join(splitMessage[1:], " ")
+
+				/*here we would place the call for the api, once it returns we would pass the response to a shorener function
+				once shortening is done we would return the new message and that would be it.
+				*/
+				_, err := s.ChannelMessageSend(m.ChannelID, "Hello "+m.Author.Username+", your query was: "+queryString)
+				if err != nil {
+					fmt.Println(err)
+				}
 			}
 		}
 	}
