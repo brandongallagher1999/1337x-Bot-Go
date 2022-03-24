@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/url"
 	"sync"
+
+	"github.com/brandongallagher199/1337x-Bot-Go/internal/torrentserviceutils"
 )
 
 var linkShortenWaitGroup sync.WaitGroup
@@ -18,23 +20,25 @@ type MgnetmeResponse struct {
 	Message  string `json:"message"`
 }
 
-func GetMagnetLinks(magnetLinks []string) []string {
+func GetMagnetLinks(torrentLinks []torrentserviceutils.TorrentServiceResponse) []torrentserviceutils.TorrentServiceResponse {
 	linkShortenerChannel := make(chan string)
-	for i := range magnetLinks {
+	for i := range torrentLinks {
 		linkShortenWaitGroup.Add(1)
-		go shortenLink(linkShortenerChannel, magnetLinks[i])
+		go shortenLink(linkShortenerChannel, torrentLinks[i].Size)
 	}
 
 	go func() {
 		linkShortenWaitGroup.Wait()
 		close(linkShortenerChannel)
 	}()
-	shortenedLinks := make([]string, 0)
+
+	var i int = 0
 	for link := range linkShortenerChannel {
-		shortenedLinks = append(shortenedLinks, link)
+		torrentLinks[i].Seeds = link
+		i++
 	}
 
-	return shortenedLinks
+	return torrentLinks
 }
 
 func shortenLink(chnl chan string, magnetLink string) {
