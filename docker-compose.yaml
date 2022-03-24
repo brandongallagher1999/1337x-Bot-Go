@@ -1,8 +1,18 @@
 version: "3.8"
 
 services:
-  bot:
-    build: "./torrent-service/"
+  microservice:
+    build:
+      context: "./torrent-service/"
+      dockerfile: "./torrent-service/Dockerfile"
     ports:
-      - "80:80"
+      - "3000:3000"
+    restart: unless-stopped
+  
+  discord:
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    ports:
+      "80:80"
     restart: unless-stopped
