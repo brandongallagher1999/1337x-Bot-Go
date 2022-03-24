@@ -24,7 +24,7 @@ func GetMagnetLinks(torrentLinks []torrentserviceutils.TorrentServiceResponse) [
 	linkShortenerChannel := make(chan string)
 	for i := range torrentLinks {
 		linkShortenWaitGroup.Add(1)
-		go shortenLink(linkShortenerChannel, torrentLinks[i].Size)
+		go shortenLink(linkShortenerChannel, torrentLinks[i].Magnet)
 	}
 
 	go func() {
@@ -34,7 +34,7 @@ func GetMagnetLinks(torrentLinks []torrentserviceutils.TorrentServiceResponse) [
 
 	var i int = 0
 	for link := range linkShortenerChannel {
-		torrentLinks[i].Seeds = link
+		torrentLinks[i].Magnet = link
 		i++
 	}
 

@@ -58,14 +58,14 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				}
 			} else {
 				queryString := strings.Join(splitMessage[1:], " ")
-
 				torrentLinks := torrentserviceutils.QueryTorrentService(queryString)
 				shortened := mgnetmeutils.GetMagnetLinks(torrentLinks[:])
 				fieldArray := make([]*discordgo.MessageEmbedField, 0)
 				var counter int = 1
 				for i := range shortened {
-					name := fmt.Sprintf("%d. You need this", counter)
-					newField := &discordgo.MessageEmbedField{Name: name, Value: shortened[i].Desc, Inline: false}
+					name := fmt.Sprintf("%d. %s| ", counter, shortened[i].Title)
+					value := fmt.Sprintf("%s | Seeds: %d | Size: %s", shortened[i].Magnet, shortened[i].Seeds, shortened[i].Size)
+					newField := &discordgo.MessageEmbedField{Name: name, Value: value, Inline: false}
 					fieldArray = append(fieldArray, newField)
 					counter++
 				}

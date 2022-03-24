@@ -11,8 +11,8 @@ import (
 type TorrentServiceResponse struct {
 	Title    string `json:"title"`
 	Time     string `json:"time"`
-	Seeds    string `json:"seeds"`
-	Peers    string `json:"peers"`
+	Seeds    int    `json:"seeds"`
+	Peers    int    `json:"peers"`
 	Size     string `json:"size"`
 	Desc     string `json:"desc"`
 	Provider string `json:"provider"`
@@ -21,7 +21,7 @@ type TorrentServiceResponse struct {
 }
 
 func QueryTorrentService(query string) []TorrentServiceResponse {
-	response, err := http.Get("localhost:3000" + url.QueryEscape(query))
+	response, err := http.Get("http://localhost:3000/" + url.QueryEscape(query))
 	if err != nil {
 		log.Fatal(err)
 	}
