@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"strings"
 	"syscall"
 
@@ -14,30 +13,12 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-// Are we removing this after we fix the config package?
-var prefix string = "."
-var command string = "torrent"
+var botConfig *config.Conf
 
-func Create() {
-	// We need to change this line as it will look inside of this "listener directory", which will be problematic.
-	curDir, err := os.Getwd()
-	if err != nil {
-		fmt.Println("error getting current directory.", err)
-		return
-	}
+func Create(config *config.Conf) {
+	botConfig = config
 
-	configFilePath := filepath.Join(curDir, "config", "config.yml")
-
-	config, err := config.ReadDiscordConf(configFilePath)
-	if err != nil {
-		fmt.Println("error loading discord config,", err)
-		return
-	}
-
-	discord, err := discordgo.New("Bot " + config.Discord.Token)
-
-	prefix = config.Discord.Prefix
-	command = config.Discord.Command
+	discord, err := discordgo.New(fmt.Sprintf("Bot %s", botConfig.Discord.Token))
 
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
@@ -61,17 +42,16 @@ func Create() {
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-
 	// Ignore all messages created by the bot itself
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
 
-	if string(m.Content[0]) == prefix {
+	if string(m.Content[0]) == botConfig.Discord.Prefix {
 		splitMessage := strings.Fields(m.Content)
-		if len(splitMessage) > 1 && splitMessage[0] == prefix+command {
+		if len(splitMessage) > 1 && splitMessage[0] == fmt.Sprintf("%s%s", botConfig.Discord.Prefix, botConfig.Discord.Command) {
 			if splitMessage[1] == "--help" {
-				_, err := s.ChannelMessageSend(m.ChannelID, "Usage: "+prefix+command+" <query>")
+				_, err := s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Usage: %s%s <query>", botConfig.Discord.Prefix, botConfig.Discord.Command))
 				if err != nil {
 					fmt.Println(err)
 				}
