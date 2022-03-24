@@ -16,6 +16,8 @@ type TorrentServiceResponse struct {
 	Size     string `json:"size"`
 	Desc     string `json:"desc"`
 	Provider string `json:"provider"`
+	Magnet   string `json:"magnet"`
+	Number   int    `json:"number"`
 }
 
 func QueryTorrentService(query string) []TorrentServiceResponse {
