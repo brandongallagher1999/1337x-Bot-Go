@@ -83,6 +83,16 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				if err != nil {
 					fmt.Println(err)
 				}
+				author := &discordgo.MessageEmbedAuthor{Name: "@" + m.Author.Username}
+				field1 := &discordgo.MessageEmbedField{Name: "1. You need this", Value: "http://mgnet.me/eqyGbF9", Inline: false}
+				field2 := &discordgo.MessageEmbedField{Name: "2. Lets Roll", Value: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", Inline: false}
+				fields := [2]*discordgo.MessageEmbedField{field1, field2}
+				embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Fields: fields[:]}
+				complexMessage := &discordgo.MessageSend{Embed: embed}
+				_, err = s.ChannelMessageSendComplex(m.ChannelID, complexMessage)
+				if err != nil {
+					fmt.Println(err)
+				}
 			}
 		}
 	}
