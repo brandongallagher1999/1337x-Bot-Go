@@ -57,6 +57,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 					fmt.Println(err)
 				}
 			} else {
+				s.ChannelTyping(m.ChannelID)
 				queryString := strings.Join(splitMessage[1:], " ")
 				torrentLinks := torrentserviceutils.QueryTorrentService(queryString)
 				shortened := mgnetmeutils.GetMagnetLinks(torrentLinks[:])
