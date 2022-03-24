@@ -15,7 +15,8 @@ type Conf struct {
 		Token            string
 		Prefix           string
 		Command          string
-		MaxLinksPerQuery int32 `yaml:"maxLinksPerQuery"`
+		MaxLinksPerQuery int32  `yaml:"maxLinksPerQuery"`
+		Host             string `yaml:"host"`
 	}
 }
 

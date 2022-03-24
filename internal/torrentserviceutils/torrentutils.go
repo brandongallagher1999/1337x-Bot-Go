@@ -7,9 +7,12 @@ import (
 	"net/http"
 	"net/url"
 	"sync"
+
+	"github.com/brandongallagher199/1337x-Bot-Go/config"
 )
 
 var longMagnetWaitGroup sync.WaitGroup
+var botConfig *config.Conf
 
 type TorrentServiceResponse struct {
 	Title    string `json:"title"`
@@ -28,7 +31,7 @@ type LongMagnetResponse struct {
 }
 
 func getLongMagnets(chnl chan string, desc string) {
-	response, err := http.Get("http://torrent-service:3000/longMagnet/" + url.QueryEscape(desc))
+	response, err := http.Get("http://torrent-service/longMagnet/" + url.QueryEscape(desc))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,6 +64,9 @@ func QueryTorrentService(query string) []TorrentServiceResponse {
 	err = json.Unmarshal(responseData, &responseObject)
 	if err != nil {
 		log.Fatal(err)
+	}
+	if len(responseObject) == 0 {
+		return nil
 	}
 
 	for i := range responseObject {

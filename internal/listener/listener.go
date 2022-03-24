@@ -47,37 +47,54 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
+	if len(m.Content) > 0 {
+		if string(m.Content[0]) == botConfig.Discord.Prefix {
+			//Trasform potential query into array
+			splitMessage := strings.Fields(m.Content)
+			if len(splitMessage) > 1 && splitMessage[0] == fmt.Sprintf("%s%s", botConfig.Discord.Prefix, botConfig.Discord.Command) { //If .torrent <torrent> is called
+				if splitMessage[1] == "--help" {
+					_, err := s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Usage: %s%s <query>", botConfig.Discord.Prefix, botConfig.Discord.Command))
+					if err != nil {
+						fmt.Println(err)
+					}
+				} else {
+					s.ChannelTyping(m.ChannelID)
+					queryString := strings.Join(splitMessage[1:], " ")
+					torrentLinks := torrentserviceutils.QueryTorrentService(queryString)
+					if len(torrentLinks) == 0 || torrentLinks == nil {
 
-	if string(m.Content[0]) == botConfig.Discord.Prefix {
-		splitMessage := strings.Fields(m.Content)
-		if len(splitMessage) > 1 && splitMessage[0] == fmt.Sprintf("%s%s", botConfig.Discord.Prefix, botConfig.Discord.Command) {
-			if splitMessage[1] == "--help" {
-				_, err := s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Usage: %s%s <query>", botConfig.Discord.Prefix, botConfig.Discord.Command))
-				if err != nil {
-					fmt.Println(err)
-				}
-			} else {
-				s.ChannelTyping(m.ChannelID)
-				queryString := strings.Join(splitMessage[1:], " ")
-				torrentLinks := torrentserviceutils.QueryTorrentService(queryString)
-				shortened := mgnetmeutils.GetMagnetLinks(torrentLinks[:])
-				fieldArray := make([]*discordgo.MessageEmbedField, 0)
-				var counter int = 1
-				for i := range shortened {
-					name := fmt.Sprintf("%d. %s| ", counter, shortened[i].Title)
-					value := fmt.Sprintf("%s | Seeds: %d | Size: %s", shortened[i].Magnet, shortened[i].Seeds, shortened[i].Size)
-					newField := &discordgo.MessageEmbedField{Name: name, Value: value, Inline: false}
-					fieldArray = append(fieldArray, newField)
-					counter++
-				}
-				author := &discordgo.MessageEmbedAuthor{Name: "@" + m.Author.Username}
-				embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Fields: fieldArray[:]}
-				complexMessage := &discordgo.MessageSend{Embed: embed}
-				_, err := s.ChannelMessageSendComplex(m.ChannelID, complexMessage)
-				if err != nil {
-					fmt.Println(err)
+						author := &discordgo.MessageEmbedAuthor{Name: "@" + m.Author.Username}
+						newField := &discordgo.MessageEmbedField{Name: "Not Found", Value: "Torrent not found on 1337x, please refine your search.", Inline: false}
+						fieldArray := make([]*discordgo.MessageEmbedField, 0)
+						fieldArray = append(fieldArray, newField)
+						embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Fields: fieldArray[:]}
+						complexMessage := &discordgo.MessageSend{Embed: embed}
+						_, err := s.ChannelMessageSendComplex(m.ChannelID, complexMessage)
+						if err != nil {
+							fmt.Println(err)
+						}
+						return
+					}
+					shortened := mgnetmeutils.GetMagnetLinks(torrentLinks[:])
+					fieldArray := make([]*discordgo.MessageEmbedField, 0)
+					var counter int = 1
+					for i := range shortened {
+						name := fmt.Sprintf("%d. %s| ", counter, shortened[i].Title)
+						value := fmt.Sprintf("%s | Seeds: %d | Size: %s", shortened[i].Magnet, shortened[i].Seeds, shortened[i].Size)
+						newField := &discordgo.MessageEmbedField{Name: name, Value: value, Inline: false}
+						fieldArray = append(fieldArray, newField)
+						counter++
+					}
+					author := &discordgo.MessageEmbedAuthor{Name: "@" + m.Author.Username}
+					embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Fields: fieldArray[:]}
+					complexMessage := &discordgo.MessageSend{Embed: embed}
+					_, err := s.ChannelMessageSendComplex(m.ChannelID, complexMessage)
+					if err != nil {
+						fmt.Println(err)
+					}
 				}
 			}
 		}
 	}
+
 }
