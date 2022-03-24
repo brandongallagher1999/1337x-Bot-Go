@@ -1,5 +1,5 @@
 discord:
-  token: "<Your Token Here"
+  token: "<Your Token Here>"
   prefix: "."
   command: "torrent"
   maxLinksPerQuery: 10

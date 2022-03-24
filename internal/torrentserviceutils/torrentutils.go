@@ -8,12 +8,18 @@ import (
 	"net/url"
 )
 
-type TorrentSeriveResponse struct {
-	State string `json:"state"`
+type TorrentServiceResponse struct {
+	Title    string `json:"title"`
+	Time     string `json:"time"`
+	Seeds    string `json:"seeds"`
+	Peers    string `json:"peers"`
+	Size     string `json:"size"`
+	Desc     string `json:"desc"`
+	Provider string `json:"provider"`
 }
 
-func QueryTorrentService(query string) {
-	response, err := http.Get("" + url.QueryEscape(query))
+func QueryTorrentService(query string) []TorrentServiceResponse {
+	response, err := http.Get("localhost:3000" + url.QueryEscape(query))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -21,9 +27,10 @@ func QueryTorrentService(query string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var responseObject TorrentSeriveResponse
+	var responseObject []TorrentServiceResponse
 	err = json.Unmarshal(responseData, &responseObject)
 	if err != nil {
 		log.Fatal(err)
 	}
+	return responseObject
 }

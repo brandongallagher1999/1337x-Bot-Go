@@ -33,17 +33,19 @@
 - Clone the project by running:
 
 ```txt
-git clone https://github.com/brandongallagher1999/1337x-Bot/
+git clone https://github.com/brandongallagher1999/1337x-Bot-Go/
 ```
 
-## Create Configuration File
+## Configuration File
 
-- Go to root folder and:
+- Go to /config/ and create config.yaml
 
-```sh
-TOKEN="your bot token goes in this string"
-
-echo { '"token"' : '"'$TOKEN'"' } > config.json
+```yaml
+discord:
+  token: "<Your Token Here>"
+  prefix: "."
+  command: "torrent"
+  maxLinksPerQuery: 10
 ```
 
 ## Container

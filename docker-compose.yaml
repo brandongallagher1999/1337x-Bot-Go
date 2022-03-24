@@ -6,4 +6,3 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
-    command: ["start"]
