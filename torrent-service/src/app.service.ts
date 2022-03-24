@@ -23,12 +23,6 @@ export class AppService {
         }
       }
 
-      for (let i = 0; i < finalTorrents.length; i++) {
-        const longMagnet: string = await torrentApi.getMagnet(finalTorrents[i]);
-        finalTorrents[i].magnet = longMagnet;
-        finalTorrents[i].number = i + 1;
-      }
-
       return finalTorrents;
     } catch (error: any) {
       console.log(error);
