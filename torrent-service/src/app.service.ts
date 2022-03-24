@@ -6,6 +6,12 @@ torrentApi.enableProvider('1337x');
 
 @Injectable()
 export class AppService {
+
+  async getLongMagnet(desc: string): Promise<string> {
+    //@ts-ignore
+    return await torrentApi.getMagnet({provider: "1337x", desc: desc });
+  }
+
   async getTorrents(torrent: string): Promise<FinalTorrent[]> {
     try {
       const torrents: FinalTorrent[] = await torrentApi.search(torrent);
