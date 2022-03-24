@@ -2,13 +2,9 @@ FROM golang:1.16-buster AS build
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
+COPY . .
 
-COPY *.go ./
-
-RUN go build -o /docker-go-main
+RUN go build cmd/1337x-Bot-Go/main.go -o main
 
 ##
 ## Deploy
@@ -17,7 +13,7 @@ FROM gcr.io/distroless/base-debian10
 
 WORKDIR /
 
-COPY --from=build /docker-go-main /docker-go-main
+COPY --from=build /main /docker-go-main
 
 EXPOSE 8080
 
