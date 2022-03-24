@@ -14,11 +14,12 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// Are we removing this after we fix the config package?
 var prefix string = "."
 var command string = "torrent"
 
 func Create() {
-
+	// We need to change this line as it will look inside of this "listener directory", which will be problematic.
 	curDir, err := os.Getwd()
 	if err != nil {
 		fmt.Println("error getting current directory.", err)
