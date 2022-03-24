@@ -2,17 +2,25 @@ version: "3.8"
 
 services:
   microservice:
+    container_name: torrent-service
     build:
       context: "./torrent-service/"
-      dockerfile: "./torrent-service/Dockerfile"
+      dockerfile: "Dockerfile"
     ports:
       - "3000:3000"
     restart: unless-stopped
+    networks:
+      - backend
   
   discord:
     build:
       context: "."
       dockerfile: Dockerfile
     ports:
-      "80:80"
+      - "80:80"
     restart: unless-stopped
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge

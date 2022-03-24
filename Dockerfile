@@ -4,7 +4,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN go build cmd/1337x-Bot-Go/main.go -o main
+RUN go mod download
+RUN go build -o /main cmd/1337x-Bot-Go/main.go
 
 ##
 ## Deploy
@@ -14,6 +15,7 @@ FROM gcr.io/distroless/base-debian10
 WORKDIR /
 
 COPY --from=build /main /docker-go-main
+COPY --from=build /app/config /config
 
 EXPOSE 8080
 
