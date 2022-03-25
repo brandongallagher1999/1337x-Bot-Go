@@ -79,7 +79,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 					fieldArray := make([]*discordgo.MessageEmbedField, 0)
 					var counter int = 1
 					for i := range shortened {
-						name := fmt.Sprintf("%d. %s| ", counter, shortened[i].Title)
+						name := fmt.Sprintf("%d. %s ", counter, shortened[i].Title)
 						value := fmt.Sprintf("%s | Seeds: %d | Size: %s", shortened[i].Magnet, shortened[i].Seeds, shortened[i].Size)
 						newField := &discordgo.MessageEmbedField{Name: name, Value: value, Inline: false}
 						fieldArray = append(fieldArray, newField)
