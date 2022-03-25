@@ -42,7 +42,7 @@ git clone https://github.com/brandongallagher1999/1337x-Bot-Go/
 
 ```yaml
 discord:
-  token: "<Your Token Here>"
+  token: "<Your Bot's Token Here>"
   prefix: "."
   command: "torrent"
   maxLinksPerQuery: 10
