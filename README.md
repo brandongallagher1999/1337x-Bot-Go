@@ -38,7 +38,12 @@ git clone https://github.com/brandongallagher1999/1337x-Bot-Go/
 
 ## Configuration File
 
-- Go to /config/ and create config.yaml
+1.
+```sh
+touch config/config.yaml
+```
+
+2. Edit config/config.yaml
 
 ```yaml
 discord:
