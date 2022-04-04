@@ -22,7 +22,7 @@ type Conf struct {
 
 func ReadDiscordConf() (*Conf, error) {
 	base, err := os.Getwd()
-	base = path.Join(base, "config", "config.yml")
+	base = path.Join(base, "config", "config.yaml")
 	buf, err := ioutil.ReadFile(base)
 	if err != nil {
 		log.Fatal(err)
