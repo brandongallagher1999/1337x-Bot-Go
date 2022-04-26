@@ -2,7 +2,7 @@
 
 # Unofficial Discord Bot
 
-![build](https://github.com/brandongallagher1999/1337x-Bot/actions/workflows/ci.yml/badge.svg) ![deployment](https://github.com/brandongallagher1999/1337x-Bot/actions/workflows/azure.yml/badge.svg)
+![deployment](https://github.com/brandongallagher1999/1337x-Bot-Go/actions/workflows/deploy.yaml/badge.svg)
 
 ## Description
 
