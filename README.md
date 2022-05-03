@@ -22,6 +22,36 @@
 .github
 ```
 
+# How to run via Azure VM with Terraform
+
+## Prerequisites
+
+- Install Terraform [**here**](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+
+- Install Azure CLI [**here**](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+
+## Login to your Azure Instance with a Subscription
+
+```sh
+az login
+
+# or
+
+az login --use-device-code
+```
+
+
+## Go into /terraform/
+
+- Edit versioning.tf as instructed by the comments
+
+- Run these commands
+
+```sh
+terraform init
+terraform apply
+```
+
 # How to run using Docker
 
 ## Pre-Requisites
