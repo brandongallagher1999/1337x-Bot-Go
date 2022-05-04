@@ -31,7 +31,7 @@ type LongMagnetResponse struct {
 }
 
 func getLongMagnets(chnl chan string, desc string) {
-	response, err := http.Get("http://torrent-service/longMagnet/" + url.QueryEscape(desc))
+	response, err := http.Get("http://torrent-service:3000/longMagnet/" + url.QueryEscape(desc))
 	if err != nil {
 		log.Fatal(err)
 	}
