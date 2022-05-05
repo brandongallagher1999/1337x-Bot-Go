@@ -82,6 +82,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 							counter++
 						}
 						author := &discordgo.MessageEmbedAuthor{Name: m.Author.Username, IconURL: m.Author.AvatarURL(""),}
+					        footer := &discordgo.MessageEmbedFooter{Text: "For more results, check 1337x."}
 						embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Footer: footer, Color: 15102219, Fields: fieldArray[:]}
 						complexMessage := &discordgo.MessageSend{Embed: embed}
 						_, err := s.ChannelMessageSendComplex(m.ChannelID, complexMessage)
