@@ -63,7 +63,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 							newField := &discordgo.MessageEmbedField{Name: "Not Found", Value: "Torrent not found on 1337x, please refine your search.", Inline: false}
 							fieldArray := make([]*discordgo.MessageEmbedField, 0)
 							fieldArray = append(fieldArray, newField)
-							embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Fields: fieldArray[:]}
+							embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Color: 16711680, Fields: fieldArray[:]}
 							complexMessage := &discordgo.MessageSend{Embed: embed}
 							_, err := s.ChannelMessageSendComplex(m.ChannelID, complexMessage)
 							if err != nil {
@@ -82,7 +82,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 							counter++
 						}
 						author := &discordgo.MessageEmbedAuthor{Name: m.Author.Username, IconURL: m.Author.AvatarURL(""),}
-						embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Fields: fieldArray[:]}
+						embed := &discordgo.MessageEmbed{Type: discordgo.EmbedTypeLink, Author: author, Footer: footer, Color: 15102219, Fields: fieldArray[:]}
 						complexMessage := &discordgo.MessageSend{Embed: embed}
 						_, err := s.ChannelMessageSendComplex(m.ChannelID, complexMessage)
 						if err != nil {
