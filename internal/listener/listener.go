@@ -59,7 +59,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 						torrentLinks := torrentserviceutils.QueryTorrentService(queryString)
 						if len(torrentLinks) == 0 || torrentLinks == nil {
 
-							author := &discordgo.MessageEmbedAuthor{Name: "@" + m.Author.Username}
+							author := &discordgo.MessageEmbedAuthor{Name: m.Author.Username, IconURL: m.Author.AvatarURL(""),
 							newField := &discordgo.MessageEmbedField{Name: "Not Found", Value: "Torrent not found on 1337x, please refine your search.", Inline: false}
 							fieldArray := make([]*discordgo.MessageEmbedField, 0)
 							fieldArray = append(fieldArray, newField)
