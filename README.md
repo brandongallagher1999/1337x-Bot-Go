@@ -2,7 +2,6 @@
 
 # Unofficial Discord Bot
 
-![deployment](https://github.com/brandongallagher1999/1337x-Bot-Go/actions/workflows/deploy.yaml/badge.svg)
 
 ## Description
 
