@@ -33,7 +33,15 @@ func Create(config *config.Conf) {
 		fmt.Println("error opening connection,", err)
 		return
 	}
-
+        discord.UpdateStatusComplex(discordgo.UpdateStatusData{
+         Status: "online",
+         Activities: []*discordgo.Activity{ 
+          &discordgo.Activity{
+           Name: "you use .torrent",
+           Type: discordgo.ActivityTypeWatching,
+         },
+       },
+     })
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
