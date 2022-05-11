@@ -93,4 +93,5 @@ docker-compose up -d
 
 # Example / Usage
 
-![Image of the Bot Working](/images/example.jpg?raw=true)
+![Image of the Bot Working](/images/example.png?raw=true)
+![Bot replying to Query with no results](/images/noresults.png?raw=true)
