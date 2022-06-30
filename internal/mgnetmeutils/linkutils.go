@@ -20,11 +20,16 @@ type MgnetmeResponse struct {
 	Message  string `json:"message"`
 }
 
+type UpdateMagnetLink struct {
+	Index int
+	Link  string
+}
+
 func GetMagnetLinks(torrentLinks []torrentserviceutils.TorrentServiceResponse) []torrentserviceutils.TorrentServiceResponse {
-	linkShortenerChannel := make(chan string)
-	for i := range torrentLinks {
+	linkShortenerChannel := make(chan UpdateMagnetLink)
+	for idx, torrent := range torrentLinks {
 		linkShortenWaitGroup.Add(1)
-		go shortenLink(linkShortenerChannel, torrentLinks[i].Magnet)
+		go shortenLink(linkShortenerChannel, idx, torrent.Magnet)
 	}
 
 	go func() {
@@ -32,16 +37,14 @@ func GetMagnetLinks(torrentLinks []torrentserviceutils.TorrentServiceResponse) [
 		close(linkShortenerChannel)
 	}()
 
-	var i int = 0
-	for link := range linkShortenerChannel {
-		torrentLinks[i].Magnet = link
-		i++
+	for response := range linkShortenerChannel {
+		torrentLinks[response.Index].Magnet = response.Link
 	}
 
 	return torrentLinks
 }
 
-func shortenLink(chnl chan string, magnetLink string) {
+func shortenLink(chnl chan UpdateMagnetLink, idx int, magnetLink string) {
 	response, err := http.Get("http://mgnet.me/api/create?&format=json&opt=&m=" + url.QueryEscape(magnetLink))
 	if err != nil {
 		log.Fatal(err)
@@ -55,6 +58,6 @@ func shortenLink(chnl chan string, magnetLink string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	chnl <- responseObject.Shorturl
+	chnl <- UpdateMagnetLink{Index: idx, Link: responseObject.Shorturl}
 	linkShortenWaitGroup.Done()
 }

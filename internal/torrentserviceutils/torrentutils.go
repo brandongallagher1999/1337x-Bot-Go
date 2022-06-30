@@ -30,7 +30,12 @@ type LongMagnetResponse struct {
 	Magnet string `json:"magnet"`
 }
 
-func getLongMagnets(chnl chan string, desc string) {
+type UpdateMagnetLink struct {
+	Index int
+	Link  string
+}
+
+func getLongMagnets(chnl chan UpdateMagnetLink, idx int, desc string) {
 	response, err := http.Get("http://torrent-service:3000/longMagnet/" + url.QueryEscape(desc))
 	if err != nil {
 		log.Fatal(err)
@@ -46,12 +51,12 @@ func getLongMagnets(chnl chan string, desc string) {
 		log.Fatal(err)
 	}
 
-	chnl <- responseObject.Magnet
+	chnl <- UpdateMagnetLink{Index: idx, Link: responseObject.Magnet}
 	longMagnetWaitGroup.Done()
 }
 
 func QueryTorrentService(query string) []TorrentServiceResponse {
-	longMagnetChannel := make(chan string)
+	longMagnetChannel := make(chan UpdateMagnetLink)
 	response, err := http.Get("http://torrent-service:3000/" + url.QueryEscape(query))
 	if err != nil {
 		log.Fatal(err)
@@ -69,9 +74,9 @@ func QueryTorrentService(query string) []TorrentServiceResponse {
 		return nil
 	}
 
-	for i := range responseObject {
+	for idx, torrent := range responseObject {
 		longMagnetWaitGroup.Add(1)
-		go getLongMagnets(longMagnetChannel, responseObject[i].Desc)
+		go getLongMagnets(longMagnetChannel, idx, torrent.Desc)
 	}
 
 	go func() {
@@ -79,10 +84,8 @@ func QueryTorrentService(query string) []TorrentServiceResponse {
 		close(longMagnetChannel)
 	}()
 
-	var j int = 0
-	for mgnt := range longMagnetChannel {
-		responseObject[j].Magnet = mgnt
-		j++
+	for response := range longMagnetChannel {
+		responseObject[response.Index].Magnet = response.Link
 	}
 
 	return responseObject
