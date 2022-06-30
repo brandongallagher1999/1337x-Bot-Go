@@ -34,7 +34,7 @@ func Create(config *config.Conf) {
 		return
 	}
 	discord.UpdateStatusComplex(discordgo.UpdateStatusData{
-		Status: "online",
+		Status: "dnd",
 		Activities: []*discordgo.Activity{
 			&discordgo.Activity{
 				Name: "you use .torrent",
@@ -130,5 +130,5 @@ func helpCmd(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func githubCmd(s *discordgo.Session, m *discordgo.MessageCreate) {
-	s.ChannelMessageSend(m.ChannelID, "https://github.com/brandongallagher1999/1337x-Bot-Go")
+	s.ChannelMessageSend(m.ChannelID, "<https://github.com/brandongallagher1999/1337x-Bot-Go>")
 }
